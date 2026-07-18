@@ -1,0 +1,257 @@
+@import "tailwindcss";
+
+:root {
+  /* פלטה כהה בהשראת ה-INSPO — בורדו עמוק + אדום-חלודה + שמנת */
+  --accent:      #A52A1A;
+  --accent-2:    #C8402C;
+  --accent-soft: #F5DED9;
+  --accent-glow: rgba(165, 42, 26, 0.25);
+
+  --bg:    #1A0505;
+  --bg-2:  #2B0A0A;
+  --bg-3:  #0E0202;
+  --paper: #EFEAE0;
+
+  --ink:    #EFEAE0;
+  --ink-2:  #D9D2C4;
+  --mute:   #B8A99A;
+  --mute-2: #8A7A6C;
+  --line:   rgba(239, 234, 224, 0.08);
+  --line-2: rgba(239, 234, 224, 0.16);
+
+  --f-hebrew: "Rubik", system-ui, sans-serif;
+  --f-serif:  "Suez One", serif;      /* כותרות — display עברי כבד ונוכח */
+  --f-mono:   "Rubik", system-ui, sans-serif;
+
+  --r-sm: 8px; --r-md: 14px; --r-lg: 22px; --r-pill: 999px;
+
+  --shadow-sm:   0 1px 0 rgba(0,0,0,.2), 0 2px 8px rgba(0,0,0,.25);
+  --shadow-md:   0 1px 0 rgba(0,0,0,.2), 0 14px 34px -12px rgba(0,0,0,.5);
+  --shadow-glow: 0 24px 48px -16px var(--accent-glow);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ── Reset ─────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; border: 0; background: transparent; color: inherit; padding: 0; }
+ul, ol { list-style: none; }
+img { display: block; max-width: 100%; background: var(--bg-2); }
+
+/* ── Base ───────────────────────────── */
+html {
+  direction: rtl;
+  font-family: var(--f-hebrew);
+  font-size: 18px;
+  line-height: 1.6;
+  letter-spacing: -0.005em;
+  /* Suez One קיים רק במשקל 400 — לא לזייף bold סינתטי */
+  font-synthesis-weight: none;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+body { overflow-x: hidden; min-height: 100svh; background: var(--bg); }
+
+h1, h2, h3 { text-wrap: balance; font-family: var(--f-serif); }
+p { text-wrap: pretty; }
+
+/* טקסטורת גריד אדומה עדינה — כמו ב-INSPO */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(200, 64, 44, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 64, 44, 0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Noise עדין מעל הכל */
+body::before {
+  content: ''; position: fixed; inset: 0;
+  pointer-events: none; z-index: 9999; opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 250px 250px;
+}
+
+/* ── מובייל ─────────────────────────── */
+* { -webkit-tap-highlight-color: transparent; }
+button, a, [role="button"] { touch-action: manipulation; }
+
+/* ── Focus + Selection + Scrollbar ─── */
+:focus { outline: none; }
+:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; border-radius: 4px; }
+::selection { background: var(--accent); color: var(--paper); }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
+
+/* ── Reduced Motion ─────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ── Skip Link ──────────────────────── */
+.skip-link {
+  position: absolute; top: -100%; right: 0; left: 0;
+  text-align: center; background: var(--accent); color: var(--paper);
+  padding: 1rem; z-index: 10002; font-weight: 600;
+  transition: top 0.2s ease;
+}
+.skip-link:focus { top: 0; }
+
+/* ── SR-only ────────────────────────── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border-width: 0;
+}
+
+/* ── Scroll Progress Bar (scaleX — לא מאנמים width) ── */
+#scroll-progress {
+  position: fixed; top: 0; right: 0; left: 0; height: 2px;
+  background: var(--accent-2); z-index: 10001;
+  transform: scaleX(0); transform-origin: right;
+  transition: transform 0.1s linear; pointer-events: none;
+}
+
+/* ── Buttons ────────────────────────── */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.85rem 2.2rem; background: var(--accent); color: var(--paper);
+  font-family: var(--f-hebrew); font-weight: 700; font-size: 0.9rem;
+  border-radius: var(--r-pill); min-width: 10rem;
+  box-shadow: 0 4px 20px var(--accent-glow), 0 1px 0 rgba(255,255,255,0.12) inset;
+  transition: transform 200ms, box-shadow 200ms, background 200ms;
+  user-select: none;
+}
+.btn-primary:hover  { transform: translateY(-3px); background: var(--accent-2); box-shadow: 0 8px 28px var(--accent-glow); }
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.85rem 2.2rem; background: transparent; color: var(--ink);
+  border: 1px solid var(--line-2); font-weight: 600; font-size: 0.9rem;
+  border-radius: var(--r-pill); min-width: 10rem;
+  backdrop-filter: blur(8px);
+  transition: border-color 200ms, background 200ms, transform 200ms;
+}
+.btn-outline:hover { border-color: var(--mute); background: rgba(239,234,224,0.06); transform: translateY(-2px); }
+
+/* ── Section Label — קיקר יחיד ב-hero בלבד (לא פיגום על כל סקשן) ── */
+.section-label {
+  font-family: var(--f-hebrew); font-weight: 600;
+  font-size: 0.8rem; letter-spacing: 0.06em;
+  color: var(--accent-2); display: block; margin-bottom: 0.9rem;
+}
+
+/* ── Cards ──────────────────────────── */
+.card-dark {
+  background: rgba(239, 234, 224, 0.04);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.card-dark:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--line-2);
+}
+
+/* ── Inputs ─────────────────────────── */
+.field {
+  width: 100%;
+  padding: 0.85rem 1.2rem;
+  background: rgba(239, 234, 224, 0.05);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-pill);
+  color: var(--ink);
+  font-family: var(--f-hebrew);
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.field::placeholder { color: var(--mute); }
+.field:focus { border-color: var(--accent-2); background: rgba(239,234,224,0.08); box-shadow: 0 0 0 3px var(--accent-glow); outline: none; }
+.field[aria-invalid="true"] { border-color: #E05B4A; box-shadow: 0 0 0 3px rgba(224,91,74,0.15); }
+
+/* ── Navbar ─────────────────────────── */
+.nav-desktop { display: flex; align-items: center; gap: 0.15rem; }
+.nav-burger  { display: none; }
+@media (max-width: 900px) {
+  .nav-desktop { display: none; }
+  .nav-burger  { display: flex; flex-direction: column; gap: 5px; padding: 0.55rem; }
+}
+
+/* ── Grain texture ──────────────────── */
+.grain::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 5; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* ── Routes sticky stack ────────────── */
+.route-panel {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: stretch;
+  min-height: clamp(20rem, 46vh, 26rem);
+}
+/* מונע מ-CSS Grid להתפרש לפי הגודל הפנימי של ה-<img> (900px) ולפרוץ מהתא */
+.route-panel > * { min-width: 0; }
+.route-panel-body {
+  padding: clamp(1.8rem, 4vw, 3.2rem);
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+  min-width: 0;
+}
+@media (min-width: 901px) {
+  .route-sticky {
+    position: sticky;
+    top: calc(5.5rem + var(--stack-i) * 1.1rem);
+  }
+}
+@media (max-width: 900px) {
+  .route-panel { grid-template-columns: 1fr; }
+  .route-panel > div:first-child { aspect-ratio: 16 / 10; }
+}
+
+/* ── Animated conic border (ציטוט מוביל) ── */
+@property --ring-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.featured-ring {
+  position: relative;
+  border-radius: 2rem;
+  padding: clamp(2rem, 4vw, 3rem);
+  background: var(--bg-2);
+}
+.featured-ring::before {
+  content: '';
+  position: absolute; inset: -1.5px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--ring-angle), var(--accent) 0%, transparent 22%, transparent 55%, var(--accent-2) 75%, var(--accent) 100%);
+  animation: ring-rotate 7s linear infinite;
+  z-index: -1;
+}
+@keyframes ring-rotate { to { --ring-angle: 360deg; } }
+@media (prefers-reduced-motion: reduce) {
+  .featured-ring::before { animation: none; }
+}
+
+/* ── Misc ───────────────────────────── */
+@keyframes spin { to { transform: rotate(360deg); } }
+hr { border: none; border-top: 1px solid var(--line); }
+.prose a { text-decoration: underline; text-decoration-color: var(--accent-2); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.prose a:hover { text-decoration-thickness: 2px; }
