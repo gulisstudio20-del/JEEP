@@ -207,8 +207,10 @@ button, a, [role="button"] { touch-action: manipulation; }
   align-items: stretch;
   min-height: clamp(20rem, 46vh, 26rem);
 }
-/* מונע מ-CSS Grid להתפרש לפי הגודל הפנימי של ה-<img> (900px) ולפרוץ מהתא */
+/* מונע מ-CSS Grid להתפרש לפי הגודל הפנימי של ה-<img> ולפרוץ מהתא —
+   קריטי גם לרוחב (תמונה 900px) וגם לגובה (תמונות פורטרט "מתפוצצות" בלי aspect-ratio קבוע) */
 .route-panel > * { min-width: 0; }
+.route-panel > div:first-child { aspect-ratio: 4 / 3; height: auto; }
 .route-panel-body {
   padding: clamp(1.8rem, 4vw, 3.2rem);
   display: flex; flex-direction: column; justify-content: center; align-items: flex-start;

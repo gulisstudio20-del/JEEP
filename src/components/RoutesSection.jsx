@@ -57,7 +57,12 @@ export default function RoutesSection() {
                     <h3 style={{ color: 'var(--accent-2)', fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: '0.9rem' }}>
                       {route.title}
                     </h3>
-                    <p style={{ fontSize: '0.98rem', color: 'var(--ink-2)', lineHeight: 1.75, marginBottom: '1.6rem', maxWidth: '32rem' }}>
+                    <p
+                      style={{
+                        fontSize: '0.98rem', color: 'var(--ink-2)', lineHeight: 1.75, marginBottom: '1.6rem', maxWidth: '32rem',
+                        display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 3, overflow: 'hidden',
+                      }}
+                    >
                       {route.text}
                     </p>
                     <a
