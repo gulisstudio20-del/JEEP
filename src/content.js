@@ -4,9 +4,8 @@
 // ─────────────────────────────────────────────────────────────
 
 export const brand = {
-  name: 'OFFROAD', // 🔴 פלייסהולדר — להחליף בשם האמיתי
-  tagline: 'OFFROAD ',
-  latin: 'OFFROAD · 4×4', // תגית לטינית קטנה בפונט מונו
+  name: 'OFFROAD',
+  latin: '4×4 · ISRAEL', // תגית לטינית קטנה ליד הלוגו — לא חוזרת על השם עצמו
 }
 
 export const contact = {

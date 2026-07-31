@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
+import { brand } from '../content.js'
 
 export default function LegalPage({ title, children }) {
   useEffect(() => {
     window.scrollTo(0, 0)
-    document.title = `${title} — טיולי ג׳יפים`
+    document.title = `${title} — ${brand.name}`
   }, [title])
 
   return (
